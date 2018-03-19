@@ -36,6 +36,7 @@ group :development, :test do
 
   # Use Factory Girl for generating random test data
   gem 'factory_bot_rails'
+  gem 'pry-rails'
 end
 
 group :development do
