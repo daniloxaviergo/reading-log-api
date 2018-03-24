@@ -28,9 +28,9 @@ ActiveRecord::Schema.define(version: 20180319221024) do
   end
 
   create_table "projects", force: :cascade do |t|
-    t.string "nome"
+    t.string "name"
     t.integer "total_page", default: 0
-    t.date "inicio"
+    t.date "started_at"
     t.integer "page", default: 0
     t.boolean "reinicia", default: false
   end
