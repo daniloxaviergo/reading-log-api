@@ -4,7 +4,7 @@ task :dxupdate => :environment do
 
   projects.each do |project|
     logs       = project.delete(:logs)
-    db_project = Project.where(nome: project[:nome]).first
+    db_project = Project.where(name: project[:nome]).first
 
     if db_project
       update_project(db_project, project, logs)
@@ -17,17 +17,22 @@ task :dxupdate => :environment do
 end
 
 def create_project(project, logs)
-  db_project = Project.create(project)
+  started_at = project.delete(:inicio)
+  project[:started_at] = started_at
 
-  puts "Importando: #{db_project.nome}"
+  p_name = project.delete(:nome)
+  project[:name] = p_name
+
+  db_project = Project.create(project)
+  puts "Importando: #{db_project.name}"
   update_logs(db_project, logs)
 end
 
 def update_project(db_project, project, logs)
-  puts "Atualizando: #{db_project.nome}"
+  puts "Atualizando: #{db_project.name}"
   attrs = {
     total_page: project[:total_page],
-    inicio:     project[:inicio],
+    started_at: project[:inicio],
     page:       project[:page]
   }
   db_project.update(attrs)
