@@ -1,11 +1,4 @@
 Rails.application.routes.draw do
-  # dashboard/day
-  # dashboard/echart/speculate_efective
-  # dashboard/last_days?count=7|15
-  # projects.json?filter={ status = not_fineshed }
-  # dashboard/echart/day_week?day=1
-  # dashboard/echart/total
-
   namespace :v1 do
     resources :projects, only: [:index, :show] do
       resources :logs, only: :index
