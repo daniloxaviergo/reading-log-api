@@ -9,11 +9,11 @@ class MeanLog
       resp
     end
 
-    data_inicio = first_read.data.to_date
+    begin_data = first_read.data.to_date
     @means = logs.each_with_object({}) do |log, obj|
       total_pages = log[:read_pages].sum.to_f
       log_data    = log[:data].to_date
-      count_reads = (data_inicio..log_data).step(7).map { |d| d }.size.to_f
+      count_reads = (begin_data..log_data).step(7).map { |d| d }.size.to_f
 
       mean = (total_pages / count_reads).round(3)
       idx  = log[:wday]
