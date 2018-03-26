@@ -6,9 +6,7 @@ class Log < ApplicationRecord
 
   after_validation :set_page_project
 
-  scope :order_data, -> { order(data: :asc) }
   scope :order_wday, -> { order(wday: :asc) }
-
   scope :range_data, -> (date_start, date_end=nil) {
     if date_end.present?
       criteria = "#{table_name}.data < ? AND #{table_name}.data > ?"

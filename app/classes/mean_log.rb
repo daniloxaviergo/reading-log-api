@@ -1,7 +1,7 @@
 class MeanLog
   attr_reader :means, :geral, :speculate
 
-  def initialize(logs)
+  def initialize(logs, first_read)
     logs = logs.group_by { |l| l[:wday] }
     logs = logs.map do |(wday, grouped)|
       resp = grouped.first.to_hash
@@ -9,9 +9,11 @@ class MeanLog
       resp
     end
 
+    data_inicio = first_read.data.to_date
     @means = logs.each_with_object({}) do |log, obj|
       total_pages = log[:read_pages].sum.to_f
-      count_reads = log[:read_pages].length.to_f
+      log_data    = log[:data].to_date
+      count_reads = (data_inicio..log_data).step(7).map { |d| d }.size.to_f
 
       mean = (total_pages / count_reads).round(3)
       idx  = log[:wday]
