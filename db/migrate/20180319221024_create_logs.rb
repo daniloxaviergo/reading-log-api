@@ -5,6 +5,7 @@ class CreateLogs < ActiveRecord::Migration[5.1]
       t.datetime :data
       t.integer :start_page
       t.integer :end_page
+      t.integer :wday
       t.text :note, :text
 
       t.timestamps

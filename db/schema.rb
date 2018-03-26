@@ -20,6 +20,7 @@ ActiveRecord::Schema.define(version: 20180319221024) do
     t.datetime "data"
     t.integer "start_page"
     t.integer "end_page"
+    t.integer "wday"
     t.text "note"
     t.text "text"
     t.datetime "created_at", null: false
