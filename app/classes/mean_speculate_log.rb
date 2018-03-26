@@ -15,6 +15,10 @@ class MeanSpeculateLog
     @means[wday]
   end
 
+  def compare(wday, previous_mean)
+    (by_wday(wday) / previous_mean).round(3)
+  end
+
   private
 
   def calculate(mean)

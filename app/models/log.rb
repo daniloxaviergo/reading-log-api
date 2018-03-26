@@ -9,9 +9,14 @@ class Log < ApplicationRecord
   scope :order_data, -> { order(data: :asc) }
   scope :order_wday, -> { order(wday: :asc) }
 
-  scope :range_data, -> (date_start, date_end) {
-    criteria = "#{table_name}.data < ? AND #{table_name}.data > ?"
-    where(criteria, date_start, date_end)
+  scope :range_data, -> (date_start, date_end=nil) {
+    if date_end.present?
+      criteria = "#{table_name}.data < ? AND #{table_name}.data > ?"
+      where(criteria, date_start, date_end)
+    else
+      criteria = "#{table_name}.data < ?"
+      where(criteria, date_start)
+    end
   }
 
   # date_start = hoje, date_end = hoje - 7

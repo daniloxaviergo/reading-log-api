@@ -28,4 +28,8 @@ class MeanLog
   def by_wday(wday)
     @means[wday]
   end
+
+  def compare(wday, previous_mean)
+    (by_wday(wday) / previous_mean).round(3)
+  end
 end
