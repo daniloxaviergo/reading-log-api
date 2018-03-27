@@ -1,4 +1,4 @@
-class V1::Dashboard::SpeculateEfective
+class V1::Dashboard::SpeculateActual
   attr_reader :comparative
   
   def initialize(date_start, date_end, wdays)
