@@ -1,7 +1,7 @@
-class V1::Dashboard::Echart::SpeculateEfective
+class V1::Dashboard::Echart::SpeculateActual
   
   def initialize(comparative)
-    @config = ::UserConfig.new.get
+    @config = ::V1::UserConfig.new.get
     @comparative = comparative
   end
 

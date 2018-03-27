@@ -6,10 +6,10 @@ class V1::Dashboard::DayController < ApplicationController
     per_pages           = (last_week_pages.to_f) / previous_week_pages.to_f
 
     wday     = Date.today.wday
-    statsLog = StatsLog.new(Log.all)
+    statsLog = V1::StatsLog.new(Log.all)
 
     mean_last_week   = (Date.today - 15).end_of_day
-    statsLogLastWeek = StatsLog.new(Log.range_data(mean_last_week))
+    statsLogLastWeek = V1::StatsLog.new(Log.range_data(mean_last_week))
 
     previous_mean = statsLogLastWeek.mean.by_wday(wday)
     per_mean_day  = statsLog.mean.compare(wday, previous_mean)

@@ -1,4 +1,4 @@
-class StatsLog
+class V1::StatsLog
   attr_reader :mean, :max
 
   def initialize(logs)
@@ -10,7 +10,7 @@ class StatsLog
       resp
     end
 
-    @mean = MeanLog.new(grouped_logs, first_read)
-    @max  = MaxLog.new(grouped_logs)
+    @mean = ::V1::MeanLog.new(grouped_logs, first_read)
+    @max  = ::V1::MaxLog.new(grouped_logs)
   end
 end

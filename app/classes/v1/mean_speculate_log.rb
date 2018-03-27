@@ -1,8 +1,8 @@
-class MeanSpeculateLog
+class V1::MeanSpeculateLog
   attr_reader :means, :geral
 
   def initialize(meanLog)
-    @config = UserConfig.new.get
+    @config = ::V1::UserConfig.new.get
 
     @means = meanLog.means.to_a.each_with_object({}) do |(wday, mean), obj|
       obj[wday] = calculate(mean)

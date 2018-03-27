@@ -2,7 +2,7 @@ class V1::Dashboard::SpeculateEfective
   attr_reader :comparative
   
   def initialize(date_start, date_end, wdays)
-    config = ::UserConfig.new.get
+    config = ::V1::UserConfig.new.get
 
     begin_data = ::Log.order(data: :asc).first.data.to_date
     logs = ::Log.range_data(date_start, date_end)

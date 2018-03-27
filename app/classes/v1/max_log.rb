@@ -1,4 +1,4 @@
-class MaxLog
+class V1::MaxLog
   attr_reader :maxs, :geral
   
   def initialize(logs)

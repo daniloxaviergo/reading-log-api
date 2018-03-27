@@ -6,7 +6,7 @@ class V1::Dashboard::Echart::SpeculateActualController < ApplicationController
 
     hoje, previous_week = (Date.today), (Date.today - 14)
     spec_efec = V1::Dashboard::SpeculateEfective.new(previous_week, hoje, wdays)
-    echart = V1::Dashboard::Echart::SpeculateEfective.new(spec_efec.comparative)
+    echart = ::V1::Dashboard::Echart::SpeculateActual.new(spec_efec.comparative)
 
     render json: { echart: echart.graph }
   end

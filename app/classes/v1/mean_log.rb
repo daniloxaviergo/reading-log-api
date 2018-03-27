@@ -1,4 +1,4 @@
-class MeanLog
+class V1::MeanLog
   attr_reader :means, :geral, :speculate
 
   def initialize(logs, first_read)
@@ -24,7 +24,7 @@ class MeanLog
     total = @means.to_a.map { |m| m.last }.sum # sum pages by week
     @geral = (total / count).round(3)
 
-    @speculate = MeanSpeculateLog.new(self)
+    @speculate = ::V1::MeanSpeculateLog.new(self)
   end
 
   def by_wday(wday)

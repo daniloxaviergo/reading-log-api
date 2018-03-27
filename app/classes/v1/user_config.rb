@@ -1,4 +1,4 @@
-class UserConfig
+class V1::UserConfig
 
   def get
     OpenStruct.new(
