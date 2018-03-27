@@ -5,10 +5,10 @@ class V1::Dashboard::DayController < ApplicationController
     # > 1 positivo # < 1 negativo
     per_pages           = (last_week_pages.to_f) / previous_week_pages.to_f
 
-    wday = Date.today.wday
+    wday     = Date.today.wday
     statsLog = StatsLog.new(Log.all)
 
-    mean_last_week = (Date.today - 14).end_of_day
+    mean_last_week   = (Date.today - 15).end_of_day
     statsLogLastWeek = StatsLog.new(Log.range_data(mean_last_week))
 
     previous_mean = statsLogLastWeek.mean.by_wday(wday)
@@ -21,7 +21,7 @@ class V1::Dashboard::DayController < ApplicationController
       previous_week_pages: previous_week_pages,
       last_week_pages:     last_week_pages,
       per_pages:           per_pages.round(3),
-
+      
       max_day:             statsLog.max.by_wday(wday),
       mean_day:            statsLog.mean.by_wday(wday),
       mean_geral:          statsLog.mean.geral,
