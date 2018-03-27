@@ -1,4 +1,4 @@
-class V1::Dashboard::Echart::SpeculateEfectiveController < ApplicationController
+class V1::Dashboard::Echart::SpeculateActualController < ApplicationController
   def index
     previous_week = (Date.today - 15).end_of_day
     logs  = Log.range_data(previous_week)

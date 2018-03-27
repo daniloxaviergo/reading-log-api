@@ -9,9 +9,9 @@ Rails.application.routes.draw do
       resources :last_days, only: :index
 
       namespace :echart do
-        resources :speculate_efective, only: :index
-        resources :day_week,           only: :index
-        resources :total,              only: :index
+        resources :speculate_actual, only: :index
+        resources :day_week,         only: :index
+        resources :total,            only: :index
       end
     end
   end
