@@ -1,5 +1,33 @@
 class Project < ApplicationRecord
+  SQLS = {
+    running: "#{table_name}.page != #{table_name}.total_page",
+    sleeping: "#{table_name}.id > 0" # todo
+  }.freeze
+
   has_many :logs, -> { order(data: :desc) }
+
+  scope :running,  -> { where(SQLS[:running]) }
+  scope :sleeping, -> { where(SQLS[:sleeping]) }
+
+  scope :filter, -> (filter) {
+    scoped = all
+
+    statuses = filter[:status].presence
+    if statuses && statuses.is_a?(Array)
+      valid_statuses = %w(running)
+      statuses = statuses.select { |s| valid_statuses.include?(s.to_s) }
+
+      sql = statuses.map do |status|
+        next if SQLS[status].empty?
+
+        SQLS[status]
+      end
+
+      scoped = scoped.where(sql.join(' OR '))
+    end
+
+    scoped
+  }
 
   def progress
     ((page.to_f / total_page.to_f) * 100).round(2)
@@ -61,7 +89,7 @@ class Project < ApplicationRecord
   end
 
   def config
-    @config ||= ::UserConfig::new.get
+    @config ||= ::V1::UserConfig::new.get
     @config
   end
 end

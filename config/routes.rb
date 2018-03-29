@@ -6,6 +6,7 @@ Rails.application.routes.draw do
 
     namespace :dashboard do
       resources :day,       only: :index
+      resources :projects,  only: :index
       resources :last_days, only: :index
 
       namespace :echart do
