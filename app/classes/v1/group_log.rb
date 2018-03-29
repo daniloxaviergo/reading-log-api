@@ -22,4 +22,15 @@ class V1::GroupLog
       obj[wday]  = read_pages
     end
   end
+
+  def by_project
+    grouped_logs = logs.order(data: :desc).group_by { |l| l.project.name }
+    grouped_logs.map do |(project_name, grouped)|
+      {
+        project_name: project_name,
+        project_id:   grouped.first.project_id,
+        read_pages:   grouped.map(&:read_pages).flatten.sum
+      }
+    end
+  end
 end
