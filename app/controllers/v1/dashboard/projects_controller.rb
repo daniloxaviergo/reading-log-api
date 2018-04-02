@@ -4,6 +4,7 @@ class V1::Dashboard::ProjectsController < ApplicationController
     @projects = Project.filter(filter)
     @projects = Project.eager_load(:logs).where(id: @projects.map(&:id))
                                          .order_progress
+                                         .order('logs.data DESC')
                                          .all
     json_pj = ActiveModelSerializers::SerializableResource.new(@projects).as_json
     render json: json_pj.merge(stats: stats)
