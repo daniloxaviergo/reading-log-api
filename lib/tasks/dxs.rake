@@ -2,9 +2,19 @@ desc "Update database from leituras.txt"
 task :dxupdate => :environment do
   projects = YAML.load_file('/home/danilo/Documents/scripts/manager_reader/leituras.txt')
 
+  last_update = Log.order(data: :desc).first[:data].beginning_of_day
+
   projects.each do |project|
-    logs       = project.delete(:logs)
+    logs = project.delete(:logs)
+    logs = logs.select do |log|
+      log[:data].to_datetime.asctime.to_datetime.utc > last_update
+    end
+    
+    next if logs.empty?
     db_project = Project.where(name: project[:nome]).first
+    # pensar uma forma de utilizar o merge com scopes activerecord ticks
+    # Project.joins(:logs).merge(Log.range_data('123'))
+    # Project.joins(:logs).merge(Log.order_wday)
 
     if db_project
       update_project(db_project, project, logs)
