@@ -16,7 +16,10 @@ class V1::UserConfig
       paginas_90_days: 600,
 
       #
-      pages_per_day: 10
+      pages_per_day: 10,
+
+      # máximo de faltas a cada 30 dias
+      max_faltas: 3
     )
   end
 end
