@@ -12,6 +12,7 @@ Rails.application.routes.draw do
       namespace :echart do
         resources :speculate_actual, only: :index
         resources :faults_week_day,  only: :index
+        resources :mean_progress,    only: :index
         resources :day_week,         only: :index
         resources :faults,           only: :index
         resources :total,            only: :index

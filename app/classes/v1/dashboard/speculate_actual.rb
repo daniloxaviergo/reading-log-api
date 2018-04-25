@@ -21,6 +21,7 @@ class V1::Dashboard::SpeculateActual
 
       means[day.to_s] = {
         pages:     read_pages.sum,
+        mean:      mean, # raw value
         spec_mean: spec_mean
       }
     end
