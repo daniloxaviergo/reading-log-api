@@ -2,12 +2,13 @@ desc "Update database from leituras.txt"
 task :dxupdate => :environment do
   projects = YAML.load_file('/home/danilo/Documents/scripts/manager_reader/leituras.txt')
 
-  last_update = Log.order(data: :desc).first[:data].beginning_of_day
+  last_update = Log.order(data: :desc).first
+  last_update = last_update && last_update[:data].beginning_of_day
 
   projects.each do |project|
     logs = project.delete(:logs)
     logs = logs.select do |log|
-      log[:data].to_datetime.asctime.to_datetime.utc > last_update
+      last_update.blank? || log[:data].to_datetime.in_time_zone > last_update
     end
     
     next if logs.empty?
@@ -53,7 +54,7 @@ end
 def update_logs(db_project, logs)
   logs ||= []
   logs.each do |log|
-    data   = log[:data].to_datetime.asctime.to_datetime.utc
+    data   = log[:data].to_datetime.in_time_zone
     db_log = db_project.logs.where(data: data).first
 
     if db_log

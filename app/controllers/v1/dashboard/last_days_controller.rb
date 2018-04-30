@@ -4,7 +4,7 @@ class V1::Dashboard::LastDaysController < ApplicationController
       return render json: 'Unprocessable Entity', status: :unprocessable_entity
     end
 
-    data = (Date.today - ago.days).beginning_of_day
+    data = (Date.current - ago.days).beginning_of_day
     logs = Log.eager_load(:project).where("#{Log.table_name}.data > ?", data)
     logs = ::V1::GroupLog.new(logs).by_project
 

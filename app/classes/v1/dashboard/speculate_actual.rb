@@ -5,7 +5,8 @@ class V1::Dashboard::SpeculateActual
     config = ::V1::UserConfig.new.get
 
     begin_data = ::Log.order(data: :asc).first.data.to_date
-    logs = ::Log.range_data(date_start, date_end)
+    logs       = ::Log.range_data(date_start, date_end)
+    date_end   = date_end.to_date
 
     @comparative = (date_start..date_end).each_with_object({}) do |day, means|
       equal_day  = lambda { |log| log[:data].to_date == day }
