@@ -6,13 +6,13 @@ class Project < ApplicationRecord
 
   has_many :logs, -> { order(data: :desc) }
 
-  scope :order_progress,-> { 
-    order("#{table_name}.page::float / #{table_name}.total_page::float DESC")
+  scope :order_progress,-> {
+    order(Arel.sql("#{table_name}.\"page\"::float / #{table_name}.\"total_page\"::float DESC"))
   }
   scope :running,  -> { where(SQLS[:running]) }
   scope :sleeping, -> { where(SQLS[:sleeping]) }
 
-  scope :filter, -> (filter) {
+  scope :only_status, -> (filter) {
     scoped = all
 
     statuses = filter[:status].presence

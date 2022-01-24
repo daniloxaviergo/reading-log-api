@@ -1,7 +1,7 @@
 class V1::Dashboard::ProjectsController < ApplicationController
   def index
     filter = { status: [:running] }
-    @projects = Project.filter(filter)
+    @projects = Project.only_status(filter)
     @projects = Project.eager_load(:logs).where(id: @projects.map(&:id))
                                          .order_progress
                                          .order('logs.data DESC')

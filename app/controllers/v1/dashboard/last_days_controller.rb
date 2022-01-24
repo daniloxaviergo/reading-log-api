@@ -31,6 +31,8 @@ class V1::Dashboard::LastDaysController < ApplicationController
       30
     when '4'
       90
+    when '5'
+      1
     else
       0
     end
