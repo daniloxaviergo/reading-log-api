@@ -16,6 +16,7 @@ Rails.application.routes.draw do
         resources :day_week,         only: :index
         resources :faults,           only: :index
         resources :total,            only: :index
+        resources :last_year_total,  only: :index
       end
     end
   end

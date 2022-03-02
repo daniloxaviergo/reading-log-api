@@ -10,13 +10,14 @@ class V1::UserConfig
       parado_range: 90, # nao utilizado
 
       # estimavias
-      paginas_7_days: 50,
-      paginas_15_days: 100,
-      paginas_30_days: 200,
-      paginas_90_days: 600,
+      paginas_1_days: 40,
+      paginas_7_days: 280,
+      paginas_15_days: 600,
+      paginas_30_days: 1200,
+      paginas_90_days: 3600,
 
       #
-      pages_per_day: 10,
+      pages_per_day: 40,
 
       # máximo de faltas a cada 30 dias
       max_faltas: 3
