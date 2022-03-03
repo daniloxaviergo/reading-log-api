@@ -33,6 +33,45 @@ task :dxupdate => :environment do
   end
 end
 
+desc "Update database from watson frames"
+task :dxupdate_watson => :environment do
+  watsons = YAML.load_file('/frames')
+
+  watsons.each do |watson|
+    start_at, end_at, w_project, external_id, tags = watson
+    next unless w_project == "leituras"
+
+    start_at = Time.at(start_at).in_time_zone('America/Sao_Paulo')
+    end_at = Time.at(end_at).in_time_zone('America/Sao_Paulo')
+
+    minutes = ((end_at - start_at) / 1.minute).round
+    project_name = map_watson_wrong_name(tags.join.gsub("_", " "))
+    project = Project.find_by("unaccent(projects.name) ILIKE ?", "%#{project_name}%")
+    log = project.logs.find_by("logs.data BETWEEN ? AND ?", end_at - 20.minutes, end_at + 30.minutes)
+
+    # acho que o timezone da coluna date está com -3 e -3 ou seja 6 horas
+    if log.blank?
+      log = project.logs.find_by("TO_CHAR(logs.data, 'YYYY-MM-DD') = ?", end_at.to_date.to_s)
+    end
+
+    next if (project.present? && log.present?) || minutes == 0
+
+    puts "TO_CHAR(logs.data, 'YYYY-MM-DD') = ?", end_at.to_date.to_s
+
+    puts "project_id: #{project&.id}"
+    puts "start_at: #{start_at}"
+    puts "end_at: #{end_at}"
+    puts "end_at-20: #{end_at - 20.minutes}"
+    puts "end_at+30: #{end_at - 30.minutes}"
+    puts "minutes: #{minutes}"
+    puts "w_project: #{w_project}"
+    puts "external_id: #{external_id}"
+    puts "tags: #{tags}"
+    puts "project_name: #{project_name}"
+    puts "--------------------------"
+  end
+end
+
 task :dxreading_day => :environment do
   logs  = Log.all
   wdays = V1::GroupLog.new(logs).by_wday
@@ -191,6 +230,19 @@ task :neural_dataset => :environment do
   File.open('/usr/src/app/neural_dataset.csv','w') do |f|
     f.write(text_csv.join("\n"))
   end
+end
+
+def map_watson_wrong_name(project_name)
+  wrongs_names = {
+    "Apocalipse-Pr.Elias" => "Apocalipse - Pr. Elias",
+    "O homen que amava os cachorros" => "O homem que amava os cachorros",
+    "Nao te deixes vencer pelo mal" => "Nao te deixes vencer pelo"
+  }
+
+  wrong_name = wrongs_names[project_name]
+  return wrong_name if wrong_name.present?
+
+  project_name
 end
 
 def create_project(project, logs)

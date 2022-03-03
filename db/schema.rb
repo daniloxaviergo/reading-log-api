@@ -10,10 +10,11 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_03_02_123031) do
+ActiveRecord::Schema.define(version: 2022_03_02_131712) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+  enable_extension "unaccent"
 
   create_table "logs", force: :cascade do |t|
     t.bigint "project_id"
