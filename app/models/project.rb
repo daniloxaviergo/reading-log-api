@@ -5,6 +5,7 @@ class Project < ApplicationRecord
   }.freeze
 
   has_many :logs, -> { order(data: :desc) }
+  has_many :watsons
 
   scope :order_progress,-> {
     order(Arel.sql("#{table_name}.\"page\"::float / #{table_name}.\"total_page\"::float DESC"))

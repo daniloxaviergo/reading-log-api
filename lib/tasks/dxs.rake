@@ -36,39 +36,38 @@ end
 desc "Update database from watson frames"
 task :dxupdate_watson => :environment do
   watsons = YAML.load_file('/frames')
+  last_update = Watson.last&.start_at || 5.years.ago
 
   watsons.each do |watson|
     start_at, end_at, w_project, external_id, tags = watson
     next unless w_project == "leituras"
 
-    start_at = Time.at(start_at).in_time_zone('America/Sao_Paulo')
-    end_at = Time.at(end_at).in_time_zone('America/Sao_Paulo')
+    start_at = Time.at(start_at)
+    end_at = Time.at(end_at)
+
+    next if start_at <= last_update
 
     minutes = ((end_at - start_at) / 1.minute).round
     project_name = map_watson_wrong_name(tags.join.gsub("_", " "))
     project = Project.find_by("unaccent(projects.name) ILIKE ?", "%#{project_name}%")
     log = project.logs.find_by("logs.data BETWEEN ? AND ?", end_at - 20.minutes, end_at + 30.minutes)
 
-    # acho que o timezone da coluna date está com -3 e -3 ou seja 6 horas
     if log.blank?
       log = project.logs.find_by("TO_CHAR(logs.data, 'YYYY-MM-DD') = ?", end_at.to_date.to_s)
     end
 
-    next if (project.present? && log.present?) || minutes == 0
+    next if project.blank? || minutes == 0
 
-    puts "TO_CHAR(logs.data, 'YYYY-MM-DD') = ?", end_at.to_date.to_s
+    watson = Watson.new(project_id: project.id)
+    watson.log_id = log.id if log.present?
 
-    puts "project_id: #{project&.id}"
-    puts "start_at: #{start_at}"
-    puts "end_at: #{end_at}"
-    puts "end_at-20: #{end_at - 20.minutes}"
-    puts "end_at+30: #{end_at - 30.minutes}"
-    puts "minutes: #{minutes}"
-    puts "w_project: #{w_project}"
-    puts "external_id: #{external_id}"
-    puts "tags: #{tags}"
-    puts "project_name: #{project_name}"
-    puts "--------------------------"
+    watson.external_id = external_id
+    watson.start_at = start_at
+    watson.end_at = end_at
+    watson.minutes = minutes
+    watson.save
+
+    puts project.name
   end
 end
 
