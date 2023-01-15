@@ -97,7 +97,7 @@ task :dxlinear_data => :environment do
     # puts project.name
   end
 
-  File.open('/usr/src/app/linear_data','w') do |f|
+  File.open('linear_data','w') do |f|
     f.write(linear.to_json)
   end
 end
@@ -182,7 +182,7 @@ task :dxholtwinters => :environment do
 
   # puts frequency_in_read_project
   # puts frequency_read_project
-  File.open('/usr/src/app/holtwinters','w') do |f|
+  File.open('holtwinters','w') do |f|
     f.write(frequency_in_read_project.to_json)
   end
 end
@@ -226,7 +226,7 @@ task :neural_dataset => :environment do
     end
   end
 
-  File.open('/usr/src/app/neural_dataset.csv','w') do |f|
+  File.open('neural_dataset.csv','w') do |f|
     f.write(text_csv.join("\n"))
   end
 end
