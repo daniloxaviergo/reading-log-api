@@ -35,7 +35,7 @@ end
 
 desc "Update database from watson frames"
 task :dxupdate_watson => :environment do
-  watsons = YAML.load_file('/frames')
+  watsons = YAML.load_file('/watson_frames')
   last_update = Watson.last&.start_at || 5.years.ago
 
   watsons.each do |watson|
