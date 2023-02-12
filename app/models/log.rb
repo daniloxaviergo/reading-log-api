@@ -1,5 +1,6 @@
 class Log < ApplicationRecord
   belongs_to :project
+  has_many :watsons
 
   before_validation :set_data
   before_validation :set_wday

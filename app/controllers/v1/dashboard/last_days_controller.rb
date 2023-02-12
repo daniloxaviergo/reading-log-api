@@ -4,10 +4,16 @@ class V1::Dashboard::LastDaysController < ApplicationController
       return render json: 'Unprocessable Entity', status: :unprocessable_entity
     end
 
-    data = (Date.current - ago.days).beginning_of_day
-    logs = Log.eager_load(:project).where("#{Log.table_name}.data > ?", data)
-    logs = ::V1::GroupLog.new(logs).by_project
+    if ago == 1
+      datab = Date.current.beginning_of_day
+      datae = Date.current.end_of_day
+      logs = Log.eager_load(:project).where("#{Log.table_name}.data BETWEEN ? AND ?", datab, datae)
+    else
+      data = (Date.current - ago.days).beginning_of_day
+      logs = Log.eager_load(:project).where("#{Log.table_name}.data > ?", data)
+    end
 
+    logs = ::V1::GroupLog.new(logs).by_project
     count_pages = logs.map { |l| l[:read_pages] }.flatten.sum
     config      = ::V1::UserConfig.new.get
     spec_days   = "paginas_#{ago}_days"
@@ -31,6 +37,8 @@ class V1::Dashboard::LastDaysController < ApplicationController
       30
     when '4'
       90
+    when '5'
+      1
     else
       0
     end
